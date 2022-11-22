@@ -21,12 +21,12 @@
 
     <script>
         function turnOn(){
-            $.post('http://localhost:8000/on').done(function(rs){
+            $.post(window.location.origin + '/on').done(function(rs){
                 alert('current state is ' + rs);
             });
         }
         function turnOff(){
-            $.post('http://localhost:8000/off').done(function(rs){
+            $.post(window.location.origin + '/off').done(function(rs){
                 alert('current state is ' + rs);
             });
         }
