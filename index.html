@@ -5,30 +5,111 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Remote Andruino</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/main.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color:gray;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        button {
+            width: 50px;
+            height: 50px;
+            background-color: transparent;
+            border: none !important;
+        }
+        .action {
+            width: 20%;
+            height: 50%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            background-color: whitesmoke;
+        }
+        .action {
+            width: 20%;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+            background-color: whitesmoke;
+        }
+        .state {
+            margin-bottom: 25px;
+            width: 20%;
+            height: 60%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+        }
+        #toggle-icon {
+            font-size: 30px;
+        }
+        #light-bulb {
+            font-size: 150px;
+        }
+        .light-on {
+            color: yellow;
+        }
+        .light-off {
+            color: black;
+        }
+    </style>
 </head>
 <body>
     <div class="state">
-        <i class="fa-light fa-lightbulb-on"></i>
-        <i class="fa-regular fa-lightbulb-slash"></i>
+        <i id="light-bulb" class="bi bi-lightbulb-off-fill light-off"></i>
     </div>
     <div class="action">
-        <button onclick="turnOn()">ON</button>
-        <button onclick="turnOff()">OFF</button>
+        <button onclick="switchToggle()"><i id="toggle-icon" class="bi bi-toggle-off"></i></button>
     </div>
 
     <script>
-        function turnOn(){
-            $.post(window.location.origin + '/on').done(function(rs){
-                alert('current state is ' + rs);
-            });
-        }
-        function turnOff(){
-            $.post(window.location.origin + '/off').done(function(rs){
-                alert('current state is ' + rs);
-            });
+        var currentState = '0';
+        function switchToggle(){
+
+            if(currentState == '0'){
+                $.post(window.location.origin + '/on').done(function(rs){
+                    if(rs == 'ON') {
+                        currentState = '1';
+                        $("#toggle-icon").removeClass('bi-toggle-off');
+                        $("#toggle-icon").addClass('bi-toggle-on');
+                        $("#light-bulb").removeClass('bi-lightbulb-off-fill light-off');
+                        $("#light-bulb").addClass('bi-lightbulb-fill light-on');
+                    } else {
+                        alert('Some thing wrong !!!');
+                    }
+                });
+            } else {
+                $.post(window.location.origin + '/off').done(function(rs){
+                    if(rs == 'OFF') {
+                        currentState = '0';
+                        $("#toggle-icon").removeClass('bi-toggle-on');
+                        $("#toggle-icon").addClass('bi-toggle-off');
+                        $("#light-bulb").removeClass('bi-lightbulb-fill light-on');
+                        $("#light-bulb").addClass('bi-lightbulb-off-fill light-off');
+                    } else {
+                        alert('Some thing wrong !!!');
+                    }
+                });
+            }
+            
         }
     </script>
 </body>
